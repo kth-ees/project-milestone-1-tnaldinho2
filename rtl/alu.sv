@@ -21,6 +21,13 @@ module alu #(
       4'b0111: out = in_b;   // Passthrough B
       default: out = '0;          // NOP or undefined opcode
     endcase
+
+    case (out)
+      (1 << BW): flags = 3'b100; // Overflow
+      (1 << (BW-1)): flags = 3'b010; // Negative
+      0: flags = 3'b001; // Zero detect
+      default: flags = 3'b000; // Clear all flags
+    endcase
   end
 
 endmodule
